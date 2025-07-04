@@ -3,93 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mukish S - M.Sc in AIML Student</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Mukish | Data Scientist & AI Researcher</title>
+    <meta name="description" content="Data scientist specializing in language models and AI research. Explore my projects, insights, and journey in the world of artificial intelligence.">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Mukish | Data Scientist & AI Researcher">
+    <meta property="og:description" content="Data scientist specializing in language models and AI research.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mukish.dev">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Mukish S</h1>
-            <p>M.Sc in Artificial Intelligence and Machine Learning</p>
-            <nav>
-                <ul>
-                    <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
-                    <li><a href="#education"><i class="fas fa-graduation-cap"></i> Education</a></li>
-                    <li><a href="#interests"><i class="fas fa-heart"></i> Interests</a></li>
-                    <li><a href="#projects"><i class="fas fa-project-diagram"></i> Projects</a></li>
-                    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-                </ul>
-            </nav>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-text">Mukish</span>
+                    <span class="brand-accent">.</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon sun-icon">☀️</span>
+                    <span class="theme-icon moon-icon">🌙</span>
+                </button>
+            </div>
+            
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main>
-        <!-- About Section -->
-        <section id="about">
-            <div class="container">
-                <h2><i class="fas fa-user"></i> About Me</h2>
-                <p>Hello! I'm Mukish S, a passionate M.Sc student specializing in Artificial Intelligence and Machine Learning. I thrive on solving complex problems and creating innovative AI solutions that make a real-world impact.</p>
-            </div>
-        </section>
-
-        <!-- Education Section -->
-        <section id="education">
-            <div class="container">
-                <h2><i class="fas fa-graduation-cap"></i> Education</h2>
-                <ul>
-                    <li><strong>M.Sc in Artificial Intelligence and Machine Learning</strong> - Coimbatore Institute of technology, 2020-Present</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Interests Section -->
-        <section id="interests">
-            <div class="container">
-                <h2><i class="fas fa-heart"></i> Interests</h2>
-                <p>My interests lie in machine learning, deep learning, natural language processing, computer vision, and data science. I enjoy experimenting with new AI technologies and applying them to various domains to drive innovation.</p>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects">
-            <div class="container">
-                <h2><i class="fas fa-project-diagram"></i> Projects</h2>
-                <div class="projects-list">
-                    <div class="project-item">
-                        <h3>Project One</h3>
-                        <p>A brief description of your first project. <a href="https://github.com/yourusername/project-one" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a></p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="particles" id="particles"></div>
+        </div>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Hey, I'm <span class="gradient-text">Mukish</span>
+                    </h1>
+                    <div class="hero-subtitle">
+                        <span class="typewriter" id="typewriter"></span>
+                        <span class="cursor">|</span>
                     </div>
-                    <div class="project-item">
-                        <h3>Project Two</h3>
-                        <p>A brief description of your second project. <a href="https://github.com/yourusername/project-two" target="_blank"><i class="fab fa-github"></i> GitHub Repo</a></p>
+                    <p class="hero-description">
+                        Data scientist passionate about language models and AI research. 
+                        I turn complex data into actionable insights and build intelligent 
+                        systems that make a difference.
+                    </p>
+                    
+                    <div class="hero-actions">
+                        <a href="projects.html" class="btn btn-primary">
+                            View My Work
+                        </a>
+                        <a href="contact.html" class="btn btn-secondary">
+                            Let's Connect
+                        </a>
                     </div>
-                    <!-- Add more projects as needed -->
+                </div>
+                
+                <div class="hero-visual">
+                    <div class="hero-image">
+                        <div class="floating-elements">
+                            <div class="floating-element">🤖</div>
+                            <div class="floating-element">📊</div>
+                            <div class="floating-element">🧠</div>
+                            <div class="floating-element">💡</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Contact Section -->
-        <section id="contact">
-            <div class="container">
-                <h2><i class="fas fa-envelope"></i> Contact</h2>
-                <p>Feel free to reach out to me via email at <a href="mailto:mukishselvam123@gmail.com">mukishselvam123@gmail.com</a> or connect with me on <a href="https://www.linkedin.com/in/mukish-s2034033/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>.</p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
+    <!-- Skills Section -->
+    <section class="skills section" id="skills">
         <div class="container">
-            <p>&copy; 2024 Mukish. All rights reserved.</p>
-            <div class="social-icons">
-                <a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/in/yourlinkedin" target="_blank"><i class="fab fa-linkedin"></i></a>
-                <!-- Add more social icons as needed -->
+            <div class="section-header">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <p class="section-subtitle">
+                    Technologies and tools I use to bring ideas to life
+                </p>
+            </div>
+            
+            <div class="skills-grid">
+                <div class="skill-category" data-animate>
+                    <div class="skill-icon">🤖</div>
+                    <h3 class="skill-title">Machine Learning</h3>
+                    <div class="skill-items">
+                        <span class="skill-tag">TensorFlow</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">Scikit-learn</span>
+                        <span class="skill-tag">Hugging Face</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category" data-animate>
+                    <div class="skill-icon">📊</div>
+                    <h3 class="skill-title">Data Science</h3>
+                    <div class="skill-items">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">R</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Pandas</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category" data-animate>
+                    <div class="skill-icon">🧠</div>
+                    <h3 class="skill-title">LLM & NLP</h3>
+                    <div class="skill-items">
+                        <span class="skill-tag">OpenAI API</span>
+                        <span class="skill-tag">LangChain</span>
+                        <span class="skill-tag">spaCy</span>
+                        <span class="skill-tag">NLTK</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category" data-animate>
+                    <div class="skill-icon">☁️</div>
+                    <h3 class="skill-title">Cloud & DevOps</h3>
+                    <div class="skill-items">
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">MLflow</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="featured-projects section" id="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">
+                    Some of my recent work in AI and machine learning
+                </p>
+            </div>
+            
+            <div class="projects-grid">
+                <article class="project-card featured" data-animate>
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <span>Live Demo</span>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <span>GitHub</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">OpenAI</span>
+                            <span class="tech-tag">FastAPI</span>
+                        </div>
+                        <h3 class="project-title">AI-Powered Content Generator</h3>
+                        <p class="project-description">
+                            An intelligent content generation system using GPT models to create 
+                            personalized marketing copy, social media posts, and blog articles.
+                        </p>
+                    </div>
+                </article>
+                
+                <article class="project-card" data-animate>
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <span>View Project</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tech">
+                            <span class="tech-tag">PyTorch</span>
+                            <span class="tech-tag">Transformers</span>
+                        </div>
+                        <h3 class="project-title">Sentiment Analysis Dashboard</h3>
+                        <p class="project-description">
+                            Real-time sentiment analysis of social media mentions using 
+                            fine-tuned BERT models with interactive visualizations.
+                        </p>
+                    </div>
+                </article>
+                
+                <article class="project-card" data-animate>
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <span>View Project</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tech">
+                            <span class="tech-tag">LangChain</span>
+                            <span class="tech-tag">Pinecone</span>
+                        </div>
+                        <h3 class="project-title">RAG Knowledge Assistant</h3>
+                        <p class="project-description">
+                            A retrieval-augmented generation system that answers questions 
+                            about company documents using vector embeddings.
+                        </p>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="section-cta">
+                <a href="projects.html" class="btn btn-outline">
+                    View All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Blog Posts -->
+    <section class="latest-posts section" id="blog">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Latest Insights</h2>
+                <p class="section-subtitle">
+                    Thoughts on AI, data science, and the future of technology
+                </p>
+            </div>
+            
+            <div class="blog-grid">
+                <article class="blog-card" data-animate>
+                    <div class="blog-meta">
+                        <span class="blog-category">Tutorial</span>
+                        <span class="blog-date">Dec 15, 2023</span>
+                    </div>
+                    <h3 class="blog-title">
+                        <a href="blog.html">Getting Started with Large Language Models</a>
+                    </h3>
+                    <p class="blog-excerpt">
+                        A comprehensive guide to understanding and implementing LLMs in your projects, 
+                        from basics to advanced techniques.
+                    </p>
+                    <div class="blog-footer">
+                        <span class="blog-reading-time">8 min read</span>
+                        <a href="blog.html" class="blog-link">Read More →</a>
+                    </div>
+                </article>
+                
+                <article class="blog-card" data-animate>
+                    <div class="blog-meta">
+                        <span class="blog-category">Opinion</span>
+                        <span class="blog-date">Dec 10, 2023</span>
+                    </div>
+                    <h3 class="blog-title">
+                        <a href="blog.html">The Future of AI from a Gen-Z Perspective</a>
+                    </h3>
+                    <p class="blog-excerpt">
+                        How our generation's unique relationship with technology shapes 
+                        the development and adoption of artificial intelligence.
+                    </p>
+                    <div class="blog-footer">
+                        <span class="blog-reading-time">5 min read</span>
+                        <a href="blog.html" class="blog-link">Read More →</a>
+                    </div>
+                </article>
+                
+                <article class="blog-card" data-animate>
+                    <div class="blog-meta">
+                        <span class="blog-category">Technical</span>
+                        <span class="blog-date">Dec 5, 2023</span>
+                    </div>
+                    <h3 class="blog-title">
+                        <a href="blog.html">Fine-tuning Language Models for Domain-Specific Tasks</a>
+                    </h3>
+                    <p class="blog-excerpt">
+                        Learn how to customize pre-trained models for specific use cases 
+                        and achieve better performance on specialized tasks.
+                    </p>
+                    <div class="blog-footer">
+                        <span class="blog-reading-time">12 min read</span>
+                        <a href="blog.html" class="blog-link">Read More →</a>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="section-cta">
+                <a href="blog.html" class="btn btn-outline">
+                    View All Posts
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-animate>
+                <h2 class="cta-title">Ready to Build Something Amazing?</h2>
+                <p class="cta-description">
+                    Let's collaborate on your next AI project or discuss opportunities 
+                    in data science and machine learning.
+                </p>
+                <div class="cta-actions">
+                    <a href="contact.html" class="btn btn-primary">
+                        Get In Touch
+                    </a>
+                    <a href="mailto:mukish@example.com" class="btn btn-secondary">
+                        Send Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-title">Mukish</h3>
+                    <p class="footer-description">
+                        Data scientist passionate about AI research and building 
+                        intelligent systems that make a difference.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4 class="footer-section-title">Navigation</h4>
+                        <ul class="footer-menu">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="projects.html">Projects</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-section-title">Connect</h4>
+                        <ul class="footer-social">
+                            <li><a href="#" target="_blank">GitHub</a></li>
+                            <li><a href="#" target="_blank">LinkedIn</a></li>
+                            <li><a href="#" target="_blank">Twitter</a></li>
+                            <li><a href="#" target="_blank">Kaggle</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 Mukish. Built with ❤️ and lots of coffee.
+                </p>
             </div>
         </div>
     </footer>
+
+    <!-- JavaScript Files -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/animations.js"></script>
 </body>
-</html>
+</html> 

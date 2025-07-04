@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Mukish | Data Scientist & AI Specialist</title>
+    <meta name="description" content="Explore my portfolio of AI and data science projects, from language models to machine learning applications.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-text">Mukish</span>
+                    <span class="brand-accent">.</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="projects.html" class="nav-link active">Projects</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon sun-icon">☀️</span>
+                    <span class="theme-icon moon-icon">🌙</span>
+                </button>
+            </div>
+            
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content" style="grid-template-columns: 1fr; text-align: center; padding-top: 100px;">
+                    <div class="hero-text fade-in">
+                        <h1 class="hero-title">
+                            My <span class="gradient-text">Projects</span>
+                        </h1>
+                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
+                            Explore my portfolio of AI and data science projects. From cutting-edge language models 
+                            to innovative machine learning applications, each project represents my passion for 
+                            pushing the boundaries of what's possible with technology.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Stats -->
+        <section class="section" style="padding: 2rem 0;">
+            <div class="container">
+                <div class="project-stats fade-in">
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">25+</div>
+                        <div class="stat-label">Projects Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">50K+</div>
+                        <div class="stat-label">Lines of Code</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">15+</div>
+                        <div class="stat-label">Technologies Used</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">99%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Filters -->
+        <section class="section" style="padding: 2rem 0;">
+            <div class="container">
+                <div class="project-filters fade-in">
+                    <h3 class="filter-title">Filter by Category:</h3>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All Projects</button>
+                        <button class="filter-btn" data-filter="ai-ml">AI & ML</button>
+                        <button class="filter-btn" data-filter="data-science">Data Science</button>
+                        <button class="filter-btn" data-filter="web-dev">Web Development</button>
+                        <button class="filter-btn" data-filter="research">Research</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid -->
+        <section class="section" style="padding-top: 1rem;">
+            <div class="container">
+                <div class="projects-grid" id="projects-grid">
+                    <!-- Featured AI Project -->
+                    <article class="project-card featured slide-up" data-category="ai-ml">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="project-badge">Featured</div>
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <span>Live Demo</span>
+                                    </a>
+                                    <a href="#" class="project-link">
+                                        <span>GitHub</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Advanced AI Chatbot Assistant</h3>
+                            <p class="project-description">
+                                A sophisticated conversational AI powered by GPT-3.5 with custom fine-tuning, 
+                                context awareness, and domain-specific knowledge integration. Features real-time 
+                                response optimization and multi-language support.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">OpenAI API</span>
+                                <span class="tech-tag">Flask</span>
+                                <span class="tech-tag">Redis</span>
+                                <span class="tech-tag">Docker</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Sentiment Analysis Project -->
+                    <article class="project-card slide-up" data-category="data-science">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <span>View Project</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Social Media Sentiment Analysis</h3>
+                            <p class="project-description">
+                                Real-time sentiment analysis of social media posts using BERT and custom transformer models. 
+                                Features live data streaming, interactive dashboards, and trend visualization.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">BERT</span>
+                                <span class="tech-tag">Streamlit</span>
+                                <span class="tech-tag">Twitter API</span>
+                                <span class="tech-tag">Plotly</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- LLM Deployment Project -->
+                    <article class="project-card slide-up" data-category="ai-ml">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-cloud"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <span>View Project</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">LLM Deployment Pipeline</h3>
+                            <p class="project-description">
+                                Scalable deployment solution for large language models with auto-scaling, 
+                                load balancing, and comprehensive monitoring. Supports multiple model formats and inference optimization.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Docker</span>
+                                <span class="tech-tag">Kubernetes</span>
+                                <span class="tech-tag">AWS</span>
+                                <span class="tech-tag">ONNX</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Computer Vision Project -->
+                    <article class="project-card slide-up" data-category="ai-ml">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <span>View Project</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Real-time Object Detection</h3>
+                            <p class="project-description">
+                                High-performance object detection system using YOLO and custom CNN architectures. 
+                                Optimized for edge deployment with real-time processing capabilities.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">PyTorch</span>
+                                <span class="tech-tag">OpenCV</span>
+                                <span class="tech-tag">YOLO</span>
+                                <span class="tech-tag">TensorRT</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Data Visualization Project -->
+                    <article class="project-card slide-up" data-category="data-science">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <span>View Project</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Interactive Data Dashboard</h3>
+                            <p class="project-description">
+                                Comprehensive data visualization platform with real-time analytics, 
+                                customizable charts, and automated report generation for business intelligence.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">D3.js</span>
+                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">PostgreSQL</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Portfolio Website -->
+                    <article class="project-card slide-up" data-category="web-dev">
+                        <div class="project-image">
+                            <div class="project-placeholder">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="#" class="project-link">
+                                        <span>View Project</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Personal Portfolio Website</h3>
+                            <p class="project-description">
+                                Modern, responsive portfolio website showcasing my work and skills. 
+                                Features dark/light mode, smooth animations, and optimized performance.
+                            </p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML</span>
+                                <span class="tech-tag">CSS</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">Animations</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content fade-in">
+                    <h2 class="cta-title">Interested in Collaboration?</h2>
+                    <p class="cta-description">
+                        I'm always excited to work on innovative projects and explore new challenges 
+                        in AI and data science. Let's discuss how we can bring your ideas to life.
+                    </p>
+                    <div class="cta-actions">
+                        <a href="contact.html" class="btn btn-primary">
+                            Start a Project
+                        </a>
+                        <a href="https://github.com/mukish" class="btn btn-secondary" target="_blank">
+                            View GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-title">Mukish</h3>
+                    <p class="footer-description">
+                        Data scientist passionate about AI research and building 
+                        intelligent systems that make a difference.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4 class="footer-section-title">Navigation</h4>
+                        <ul class="footer-menu">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="projects.html">Projects</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-section-title">Connect</h4>
+                        <ul class="footer-social">
+                            <li><a href="#" target="_blank">GitHub</a></li>
+                            <li><a href="#" target="_blank">LinkedIn</a></li>
+                            <li><a href="#" target="_blank">Twitter</a></li>
+                            <li><a href="#" target="_blank">Kaggle</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 Mukish. Built with ❤️ and lots of coffee.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/animations.js"></script>
+</body>
+</html> 

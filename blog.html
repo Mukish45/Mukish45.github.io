@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Mukish | AI & Data Science Insights</title>
+    <meta name="description" content="Read my latest thoughts on AI, machine learning, data science, and technology trends.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-text">Mukish</span>
+                    <span class="brand-accent">.</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="blog.html" class="nav-link active">Blog</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon sun-icon">☀️</span>
+                    <span class="theme-icon moon-icon">🌙</span>
+                </button>
+            </div>
+            
+            <div class="nav-hamburger" id="nav-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content" style="grid-template-columns: 1fr; text-align: center; padding-top: 100px;">
+                    <div class="hero-text fade-in">
+                        <h1 class="hero-title">
+                            AI & Data Science <span class="gradient-text">Blog</span>
+                        </h1>
+                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
+                            Explore the latest insights, tutorials, and trends in artificial intelligence, 
+                            machine learning, and data science. Join me on this journey of discovery and innovation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Stats -->
+        <section class="section" style="padding: 2rem 0;">
+            <div class="container">
+                <div class="blog-stats fade-in">
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">25+</div>
+                        <div class="stat-label">Articles Published</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">10K+</div>
+                        <div class="stat-label">Total Views</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">500+</div>
+                        <div class="stat-label">Newsletter Subscribers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number gradient-text">50+</div>
+                        <div class="stat-label">Comments</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search and Filter -->
+        <section class="section" style="padding: 2rem 0;">
+            <div class="container">
+                <div class="blog-controls fade-in">
+                    <div class="blog-search">
+                        <input type="search" id="blog-search" placeholder="Search articles...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="blog-categories">
+                        <button class="category-btn active" data-category="all">All</button>
+                        <button class="category-btn" data-category="tutorial">Tutorials</button>
+                        <button class="category-btn" data-category="insight">Insights</button>
+                        <button class="category-btn" data-category="opinion">Opinion</button>
+                        <button class="category-btn" data-category="technical">Technical</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Article -->
+        <section class="section" style="padding-top: 1rem;">
+            <div class="container">
+                <h2 class="section-title fade-in">Featured Article</h2>
+                <article class="featured-article fade-in">
+                    <div class="article-image">
+                        <div class="article-placeholder">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="article-badge">Featured</div>
+                    </div>
+                    <div class="article-content">
+                        <div class="blog-meta">
+                            <span class="blog-category">Technical</span>
+                            <span class="blog-date">December 15, 2023</span>
+                        </div>
+                        <h3 class="article-title">
+                            <a href="#">The Future of Large Language Models: Trends and Predictions for 2024</a>
+                        </h3>
+                        <p class="article-excerpt">
+                            As we approach 2024, the landscape of large language models continues to evolve at an unprecedented pace. 
+                            From multimodal capabilities to improved reasoning, let's explore what's coming next in the world of AI...
+                        </p>
+                        <div class="blog-footer">
+                            <span class="blog-reading-time">12 min read</span>
+                            <a href="#" class="blog-link">Read More →</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Blog Grid -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title fade-in">Latest Articles</h2>
+                <div class="blog-grid" id="blog-grid">
+                    <!-- Tutorial Article -->
+                    <article class="blog-card slide-up" data-category="tutorial">
+                        <div class="blog-meta">
+                            <span class="blog-category">Tutorial</span>
+                            <span class="blog-date">Dec 10, 2023</span>
+                        </div>
+                        <h3 class="blog-title">
+                            <a href="#">Building Your First Chatbot with LangChain</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            A step-by-step guide to creating intelligent chatbots using LangChain framework. 
+                            Learn how to integrate LLMs with your applications effectively.
+                        </p>
+                        <div class="blog-footer">
+                            <span class="blog-reading-time">8 min read</span>
+                            <a href="#" class="blog-link">Read More →</a>
+                        </div>
+                    </article>
+
+                    <!-- Insight Article -->
+                    <article class="blog-card slide-up" data-category="insight">
+                        <div class="blog-meta">
+                            <span class="blog-category">Insight</span>
+                            <span class="blog-date">Dec 5, 2023</span>
+                        </div>
+                        <h3 class="blog-title">
+                            <a href="#">The Ethics of AI in Healthcare: A Gen-Z Perspective</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Exploring the ethical implications of AI in healthcare from a young developer's 
+                            viewpoint. How can we ensure responsible AI development?
+                        </p>
+                        <div class="blog-footer">
+                            <span class="blog-reading-time">6 min read</span>
+                            <a href="#" class="blog-link">Read More →</a>
+                        </div>
+                    </article>
+
+                    <!-- Technical Article -->
+                    <article class="blog-card slide-up" data-category="technical">
+                        <div class="blog-meta">
+                            <span class="blog-category">Technical</span>
+                            <span class="blog-date">Nov 28, 2023</span>
+                        </div>
+                        <h3 class="blog-title">
+                            <a href="#">Optimizing Transformer Models for Production</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Deep dive into optimization techniques for deploying transformer models in production. 
+                            From quantization to model distillation.
+                        </p>
+                        <div class="blog-footer">
+                            <span class="blog-reading-time">15 min read</span>
+                            <a href="#" class="blog-link">Read More →</a>
+                        </div>
+                    </article>
+
+                    <!-- Opinion Article -->
+                    <article class="blog-card slide-up" data-category="opinion">
+                        <div class="blog-meta">
+                            <span class="blog-category">Opinion</span>
+                            <span class="blog-date">Nov 20, 2023</span>
+                        </div>
+                        <h3 class="blog-title">
+                            <a href="#">Why Every Developer Should Learn About AI</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            My thoughts on why understanding AI is becoming essential for developers 
+                            across all domains, not just those working in machine learning.
+                        </p>
+                        <div class="blog-footer">
+                            <span class="blog-reading-time">5 min read</span>
+                            <a href="#" class="blog-link">Read More →</a>
+                        </div>
+                    </article>
+
+                    <!-- Tutorial Article -->
+                    <article class="blog-card slide-up" data-category="tutorial">
+                        <div class="blog-meta">
+                            <span class="blog-category">Tutorial</span>
+                            <span class="blog-date">Nov 15, 2023</span>
+                        </div>
+                        <h3 class="blog-title">
+                            <a href="#">Data Visualization with Python: Advanced Techniques</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Learn advanced data visualization techniques using Python. From interactive 
+                            plots to custom styling, make your data tell compelling stories.
+                        </p>
+                        <div class="blog-footer">
+                            <span class="blog-reading-time">10 min read</span>
+                            <a href="#" class="blog-link">Read More →</a>
+                        </div>
+                    </article>
+
+                    <!-- Insight Article -->
+                    <article class="blog-card slide-up" data-category="insight">
+                        <div class="blog-meta">
+                            <span class="blog-category">Insight</span>
+                            <span class="blog-date">Nov 8, 2023</span>
+                        </div>
+                        <h3 class="blog-title">
+                            <a href="#">The Rise of Multimodal AI: What It Means for Developers</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Understanding the implications of multimodal AI systems that can process 
+                            text, images, and audio simultaneously. The future is here.
+                        </p>
+                        <div class="blog-footer">
+                            <span class="blog-reading-time">7 min read</span>
+                            <a href="#" class="blog-link">Read More →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Signup -->
+        <section class="newsletter-section">
+            <div class="container">
+                <div class="newsletter-content fade-in">
+                    <h2 class="newsletter-title">Stay Updated</h2>
+                    <p class="newsletter-description">
+                        Get the latest articles on AI, machine learning, and data science delivered 
+                        straight to your inbox. No spam, just quality content.
+                    </p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                    <p class="newsletter-note">
+                        Join 500+ developers already subscribed. Unsubscribe anytime.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3 class="footer-title">Mukish</h3>
+                    <p class="footer-description">
+                        Data scientist passionate about AI research and building 
+                        intelligent systems that make a difference.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4 class="footer-section-title">Navigation</h4>
+                        <ul class="footer-menu">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="projects.html">Projects</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 class="footer-section-title">Connect</h4>
+                        <ul class="footer-social">
+                            <li><a href="#" target="_blank">GitHub</a></li>
+                            <li><a href="#" target="_blank">LinkedIn</a></li>
+                            <li><a href="#" target="_blank">Twitter</a></li>
+                            <li><a href="#" target="_blank">Kaggle</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2025 Mukish. Built with ❤️ and lots of coffee.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/animations.js"></script>
+</body>
+</html> 
