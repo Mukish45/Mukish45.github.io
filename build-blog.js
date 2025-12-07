@@ -61,7 +61,7 @@ function generatePostHTML(frontmatter, content, slug) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <style>
         .post-header {
             padding-top: 120px;
@@ -293,17 +293,17 @@ function generatePostHTML(frontmatter, content, slug) {
     <!-- Navigation -->
     <nav class="nav" id="nav">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">
+            <a href="/" class="nav-logo">
                 <span class="logo-bracket">&lt;</span>
                 <span class="logo-text">MS</span>
                 <span class="logo-bracket">/&gt;</span>
             </a>
             <ul class="nav-links" id="nav-links">
-                <li><a href="../index.html#about" class="nav-link">About</a></li>
-                <li><a href="../index.html#skills" class="nav-link">Skills</a></li>
-                <li><a href="../index.html#projects" class="nav-link">Projects</a></li>
-                <li><a href="../blog.html" class="nav-link">Blog</a></li>
-                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="/#about" class="nav-link">About</a></li>
+                <li><a href="/#skills" class="nav-link">Skills</a></li>
+                <li><a href="/#projects" class="nav-link">Projects</a></li>
+                <li><a href="/blog/" class="nav-link">Blog</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
             </ul>
             <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
                 <span></span><span></span><span></span>
@@ -312,7 +312,7 @@ function generatePostHTML(frontmatter, content, slug) {
     </nav>
 
     <main class="container">
-        <a href="../blog.html" class="back-link">
+        <a href="/blog/" class="back-link">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
@@ -380,13 +380,13 @@ function generatePostHTML(frontmatter, content, slug) {
         <div class="container">
             <div class="footer-content">
                 <p class="footer-text">
-                    Designed & Built by <span class="highlight">Mukish S along with AI</span> © 2025
+                    Designed & Built by <span class="highlight">Mukish S</span> © 2025
                 </p>
             </div>
         </div>
     </footer>
 
-    <script src="../script.js"></script>
+    <script src="/script.js"></script>
 </body>
 </html>`;
 }
@@ -407,11 +407,17 @@ function convertPost(filePath) {
     // Generate full HTML page
     const fullHTML = generatePostHTML(frontmatter, htmlContent, slug);
 
-    // Write to output directory
-    const outputPath = path.join(OUTPUT_DIR, `${slug}.html`);
+    // Create subdirectory for the post
+    const postDir = path.join(OUTPUT_DIR, slug);
+    if (!fs.existsSync(postDir)) {
+        fs.mkdirSync(postDir, { recursive: true });
+    }
+
+    // Write to output directory as index.html in subdirectory
+    const outputPath = path.join(postDir, 'index.html');
     fs.writeFileSync(outputPath, fullHTML);
 
-    console.log(`✅ Generated: blog/${slug}.html`);
+    console.log(`✅ Generated: blog/${slug}/index.html`);
 
     return {
         slug,
@@ -421,7 +427,7 @@ function convertPost(filePath) {
         date: frontmatter.date,
         readTime: frontmatter.readTime || '5 min read',
         icon: CATEGORY_ICONS[frontmatter.category] || CATEGORY_ICONS['default'],
-        url: `blog/${slug}.html`
+        url: `/blog/${slug}/`
     };
 }
 
