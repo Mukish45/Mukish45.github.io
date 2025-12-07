@@ -1,7 +1,7 @@
 ---
 title: Docker Best Practices
 category: DevOps
-date: 2025-12-07
+date: 2025-11-23
 readTime: 10 min read
 description: A production-ready guide to building efficient, secure, and maintainable Docker containers.
 ---
