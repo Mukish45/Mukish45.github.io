@@ -495,23 +495,9 @@ function generateBlogCardHTML(post, isFeatured = false) {
         day: 'numeric'
     });
 
-    const gradients = {
-        'Machine Learning': 'linear-gradient(135deg, var(--color-accent-coral), var(--color-accent-magenta))',
-        'Deep Learning': 'linear-gradient(135deg, var(--color-accent-coral), var(--color-accent-magenta))',
-        'NLP': 'linear-gradient(135deg, #ff2d6a, #ffc300)',
-        'Computer Vision': 'linear-gradient(135deg, #00f5d4, #ff6b35)',
-        'Generative AI': 'linear-gradient(135deg, #ffc300, #ff2d6a)',
-        'LLM': 'linear-gradient(135deg, #ff6b35, #00f5d4)',
-        'default': 'linear-gradient(135deg, var(--color-accent-coral), var(--color-accent-magenta))'
-    };
-
-    const gradient = gradients[post.category] || gradients['default'];
     const featuredClass = isFeatured ? ' featured-blog' : '';
 
     return `                <article class="blog-card${featuredClass}">
-                    <div class="blog-image" style="background: ${gradient};">
-                        <div class="blog-category">${post.category}</div>
-                    </div>
                     <div class="blog-content">
                         <div class="blog-meta">
                             <span class="blog-date">${formattedDate}</span>
