@@ -1,5 +1,15 @@
 [
   {
+    "slug": "docker-best-practices",
+    "title": "Docker Best Practices",
+    "description": "A production-ready guide to building efficient, secure, and maintainable Docker containers.",
+    "category": "DevOps",
+    "date": "2025-12-07T00:00:00.000Z",
+    "readTime": "10 min read",
+    "icon": "📝",
+    "url": "/blog/docker-best-practices/"
+  },
+  {
     "slug": "understanding-transformers",
     "title": "Understanding Transformers - From Attention to GPT",
     "description": "A technical deep dive into the transformer architecture that revolutionized NLP and gave rise to modern large language models.",
