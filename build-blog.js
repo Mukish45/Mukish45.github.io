@@ -479,7 +479,90 @@ function build() {
     fs.writeFileSync(POSTS_JSON, JSON.stringify(posts, null, 2));
     console.log(`\n📋 Generated: posts.json (${posts.length} posts)`);
 
+    // Update the blog section in index.html
+    updateIndexHTML(posts);
+
     console.log('\n✨ Build complete!\n');
+}
+
+/**
+ * Generate HTML for a blog card on the homepage
+ */
+function generateBlogCardHTML(post, isFeatured = false) {
+    const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    const gradients = {
+        'Machine Learning': 'linear-gradient(135deg, var(--color-accent-coral), var(--color-accent-magenta))',
+        'Deep Learning': 'linear-gradient(135deg, var(--color-accent-coral), var(--color-accent-magenta))',
+        'NLP': 'linear-gradient(135deg, #ff2d6a, #ffc300)',
+        'Computer Vision': 'linear-gradient(135deg, #00f5d4, #ff6b35)',
+        'Generative AI': 'linear-gradient(135deg, #ffc300, #ff2d6a)',
+        'LLM': 'linear-gradient(135deg, #ff6b35, #00f5d4)',
+        'default': 'linear-gradient(135deg, var(--color-accent-coral), var(--color-accent-magenta))'
+    };
+
+    const gradient = gradients[post.category] || gradients['default'];
+    const featuredClass = isFeatured ? ' featured-blog' : '';
+
+    return `                <article class="blog-card${featuredClass}">
+                    <div class="blog-image" style="background: ${gradient};">
+                        <div class="blog-category">${post.category}</div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">${formattedDate}</span>
+                            <span class="blog-read">${post.readTime}</span>
+                        </div>
+                        <h3 class="blog-title">${post.title}</h3>
+                        <p class="blog-excerpt">
+                            ${post.description}
+                        </p>
+                        <a href="${post.url}" class="blog-link">Read Article →</a>
+                    </div>
+                </article>`;
+}
+
+/**
+ * Update the blog section in index.html with the latest posts
+ */
+function updateIndexHTML(posts) {
+    const indexPath = path.join(__dirname, 'index.html');
+
+    if (!fs.existsSync(indexPath)) {
+        console.log('⚠️  index.html not found, skipping homepage update.');
+        return;
+    }
+
+    let indexHTML = fs.readFileSync(indexPath, 'utf-8');
+
+    // Take the latest 3 posts for the homepage
+    const latestPosts = posts.slice(0, 3);
+
+    if (latestPosts.length === 0) {
+        console.log('⚠️  No posts to display on homepage.');
+        return;
+    }
+
+    // Generate blog cards HTML
+    const blogCardsHTML = latestPosts.map((post, index) =>
+        generateBlogCardHTML(post, index === 0)
+    ).join('\n');
+
+    // Find and replace the blog-grid content
+    // Match the blog-grid div and its contents
+    const blogGridRegex = /(<div class="blog-grid">)([\s\S]*?)(<\/div>\s*<div class="blog-cta">)/;
+
+    if (blogGridRegex.test(indexHTML)) {
+        indexHTML = indexHTML.replace(blogGridRegex, `$1\n${blogCardsHTML}\n            $3`);
+        fs.writeFileSync(indexPath, indexHTML);
+        console.log(`📄 Updated: index.html blog section with ${latestPosts.length} latest posts`);
+    } else {
+        console.log('⚠️  Could not find blog-grid section in index.html');
+    }
 }
 
 // Run the build
