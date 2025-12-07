@@ -304,18 +304,22 @@ class Navigation {
             });
         });
 
-        // Smooth scroll
+        // Smooth scroll (only for same-page anchors)
         this.links.forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
+                const href = link.getAttribute('href');
 
-                if (targetSection) {
-                    targetSection.scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                // Check if it's a same-page anchor (starts with # only, not /#)
+                if (href.startsWith('#')) {
+                    const targetSection = document.querySelector(href);
+                    if (targetSection) {
+                        e.preventDefault();
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
                 }
+                // For cross-page links like /#about, let the browser handle navigation normally
             });
         });
     }
