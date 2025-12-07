@@ -384,24 +384,38 @@ print(&quot;✅ LiteLLM patched for Azure Claude 4.5&quot;)
 # ==========================================
 
 # NOW import your agents
-from agents import Agent, Runner
+from agents import Agent, Runner, function_tool
 from agents.extensions.models.litellm_model import LitellmModel
 
+load_dotenv()
+os.environ[&quot;AZURE_API_BASE&quot;] = &quot;https://######.services.ai.azure.com/anthropic&quot;
+
+@function_tool
+def get_weather(city: str):
+    return f&quot;The weather in {city} is awesome, obviously.&quot;
+    
 async def main():
     # 1. Initialize the Model
     # It reads LITELLM_MODEL from os.environ
-    model = LitellmModel()
+    model = LitellmModel(
+        model=&quot;azure_ai/claude-sonnet-4-5&quot;,
+        api_key=os.environ[&quot;AZURE_API_KEY&quot;],
+        base_url=os.environ[&quot;AZURE_API_BASE&quot;],
+    )
 
     # 2. Define a simple agent
     agent = Agent(
         name=&quot;AzureClaudeAgent&quot;,
         model=model,
-        instructions=&quot;You are a helpful assistant provided by Azure Claude 4.5.&quot;
+        instructions=&quot;You are a helpful assistant provided by Azure Claude 4.5.&quot;,
+        tools=[get_weather]
     )
 
     # 3. Run the agent
     print(&quot;🤖 Agent starting...&quot;)
-    await Runner.run(agent, &quot;Hello! Can you help me write a poem about monkeys patching code?&quot;)
+    result = await Runner.run(agent, &quot;Use the weather tool for Bangalore, then explain in 2 sentences what you did.&quot;)
+    print(&quot;\n--- FINAL OUTPUT ---&quot;)
+    print(result.final_output)
 
 if __name__ == &quot;__main__&quot;:
     asyncio.run(main())
