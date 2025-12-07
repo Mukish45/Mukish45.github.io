@@ -1,338 +1,433 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Mukish | AI & Data Science Insights</title>
-    <meta name="description" content="Read my latest thoughts on AI, machine learning, data science, and technology trends.">
-    
-    <!-- Fonts -->
+    <meta name="description"
+        content="Technical articles on Machine Learning, AI, Deep Learning, and Data Science by Mukish S">
+    <title>Blog | Mukish S - Data Scientist</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/animations.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .blog-page-header {
+            padding-top: 120px;
+            padding-bottom: var(--space-3xl);
+            text-align: center;
+        }
+
+        .blog-page-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-md);
+        }
+
+        .blog-page-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .blog-filters {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .filter-btn {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--color-bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: var(--color-accent-cyan);
+            color: var(--color-accent-cyan);
+        }
+
+        .blog-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .blog-article {
+            background: var(--color-bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: var(--transition-base);
+        }
+
+        .blog-article:hover {
+            transform: translateY(-5px);
+            border-color: rgba(123, 44, 191, 0.3);
+            box-shadow: var(--shadow-glow-coral);
+        }
+
+        .article-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--color-accent-coral), var(--color-accent-magenta));
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .article-image .icon {
+            font-size: 4rem;
+        }
+
+        .article-category {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            color: var(--color-accent-cyan);
+        }
+
+        .article-content {
+            padding: var(--space-xl);
+        }
+
+        .article-meta {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        .article-title {
+            font-size: 1.35rem;
+            margin-bottom: var(--space-md);
+            line-height: 1.3;
+        }
+
+        .article-excerpt {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-lg);
+            line-height: 1.6;
+        }
+
+        .article-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--color-accent-coral);
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+
+        .article-link:hover {
+            color: var(--color-accent-magenta);
+            gap: var(--space-md);
+        }
+
+        .coming-soon-banner {
+            text-align: center;
+            padding: var(--space-3xl);
+            background: var(--color-bg-card);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-xl);
+            margin-top: var(--space-3xl);
+        }
+
+        .coming-soon-banner h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-md);
+            color: var(--color-accent-gold);
+        }
+
+        .coming-soon-banner p {
+            color: var(--color-text-secondary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-xl);
+            transition: var(--transition-fast);
+        }
+
+        .back-link:hover {
+            color: var(--color-accent-cyan);
+        }
+    </style>
 </head>
+
 <body>
+    <canvas id="neural-canvas"></canvas>
+
     <!-- Navigation -->
-    <nav class="nav" id="navbar">
+    <nav class="nav" id="nav">
         <div class="nav-container">
-            <div class="nav-brand">
-                <a href="index.html" class="brand-link">
-                    <span class="brand-text">Mukish</span>
-                    <span class="brand-accent">.</span>
-                </a>
-            </div>
-            
-            <div class="nav-menu" id="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="projects.html" class="nav-link">Projects</a>
-                <a href="blog.html" class="nav-link active">Blog</a>
-                <a href="contact.html" class="nav-link">Contact</a>
-                
-                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                    <span class="theme-icon sun-icon">☀️</span>
-                    <span class="theme-icon moon-icon">🌙</span>
-                </button>
-            </div>
-            
-            <div class="nav-hamburger" id="nav-hamburger">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>
+                <span class="logo-text">MS</span>
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+                <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                <li><a href="blog.html" class="nav-link">Blog</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
+            </button>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <div class="hero-content" style="grid-template-columns: 1fr; text-align: center; padding-top: 100px;">
-                    <div class="hero-text fade-in">
-                        <h1 class="hero-title">
-                            AI & Data Science <span class="gradient-text">Blog</span>
-                        </h1>
-                        <p class="hero-description" style="max-width: 600px; margin: 0 auto;">
-                            Explore the latest insights, tutorials, and trends in artificial intelligence, 
-                            machine learning, and data science. Join me on this journey of discovery and innovation.
-                        </p>
-                    </div>
+    <main class="container">
+        <a href="index.html" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back to Home
+        </a>
+
+        <header class="blog-page-header">
+            <h1 class="blog-page-title">Blog</h1>
+            <p class="blog-page-subtitle">
+                Sharing insights on Machine Learning, AI, and the future of intelligent systems
+            </p>
+        </header>
+
+        <div class="blog-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="ml">Machine Learning</button>
+            <button class="filter-btn" data-filter="dl">Deep Learning</button>
+            <button class="filter-btn" data-filter="nlp">NLP</button>
+            <button class="filter-btn" data-filter="cv">Computer Vision</button>
+            <button class="filter-btn" data-filter="genai">GenAI</button>
+        </div>
+
+        <div class="blog-list">
+            <article class="blog-article" data-category="ml">
+                <div class="article-image">
+                    <span class="icon">🤖</span>
+                    <span class="article-category">Machine Learning</span>
                 </div>
-            </div>
-        </section>
-
-        <!-- Blog Stats -->
-        <section class="section" style="padding: 2rem 0;">
-            <div class="container">
-                <div class="blog-stats fade-in">
-                    <div class="stat-item">
-                        <div class="stat-number gradient-text">25+</div>
-                        <div class="stat-label">Articles Published</div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span>Coming Soon</span>
+                        <span>•</span>
+                        <span>5 min read</span>
                     </div>
-                    <div class="stat-item">
-                        <div class="stat-number gradient-text">10K+</div>
-                        <div class="stat-label">Total Views</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number gradient-text">500+</div>
-                        <div class="stat-label">Newsletter Subscribers</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number gradient-text">50+</div>
-                        <div class="stat-label">Comments</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Search and Filter -->
-        <section class="section" style="padding: 2rem 0;">
-            <div class="container">
-                <div class="blog-controls fade-in">
-                    <div class="blog-search">
-                        <input type="search" id="blog-search" placeholder="Search articles...">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div class="blog-categories">
-                        <button class="category-btn active" data-category="all">All</button>
-                        <button class="category-btn" data-category="tutorial">Tutorials</button>
-                        <button class="category-btn" data-category="insight">Insights</button>
-                        <button class="category-btn" data-category="opinion">Opinion</button>
-                        <button class="category-btn" data-category="technical">Technical</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Article -->
-        <section class="section" style="padding-top: 1rem;">
-            <div class="container">
-                <h2 class="section-title fade-in">Featured Article</h2>
-                <article class="featured-article fade-in">
-                    <div class="article-image">
-                        <div class="article-placeholder">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <div class="article-badge">Featured</div>
-                    </div>
-                    <div class="article-content">
-                        <div class="blog-meta">
-                            <span class="blog-category">Technical</span>
-                            <span class="blog-date">December 15, 2023</span>
-                        </div>
-                        <h3 class="article-title">
-                            <a href="#">The Future of Large Language Models: Trends and Predictions for 2024</a>
-                        </h3>
-                        <p class="article-excerpt">
-                            As we approach 2024, the landscape of large language models continues to evolve at an unprecedented pace. 
-                            From multimodal capabilities to improved reasoning, let's explore what's coming next in the world of AI...
-                        </p>
-                        <div class="blog-footer">
-                            <span class="blog-reading-time">12 min read</span>
-                            <a href="#" class="blog-link">Read More →</a>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- Blog Grid -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title fade-in">Latest Articles</h2>
-                <div class="blog-grid" id="blog-grid">
-                    <!-- Tutorial Article -->
-                    <article class="blog-card slide-up" data-category="tutorial">
-                        <div class="blog-meta">
-                            <span class="blog-category">Tutorial</span>
-                            <span class="blog-date">Dec 10, 2023</span>
-                        </div>
-                        <h3 class="blog-title">
-                            <a href="#">Building Your First Chatbot with LangChain</a>
-                        </h3>
-                        <p class="blog-excerpt">
-                            A step-by-step guide to creating intelligent chatbots using LangChain framework. 
-                            Learn how to integrate LLMs with your applications effectively.
-                        </p>
-                        <div class="blog-footer">
-                            <span class="blog-reading-time">8 min read</span>
-                            <a href="#" class="blog-link">Read More →</a>
-                        </div>
-                    </article>
-
-                    <!-- Insight Article -->
-                    <article class="blog-card slide-up" data-category="insight">
-                        <div class="blog-meta">
-                            <span class="blog-category">Insight</span>
-                            <span class="blog-date">Dec 5, 2023</span>
-                        </div>
-                        <h3 class="blog-title">
-                            <a href="#">The Ethics of AI in Healthcare: A Gen-Z Perspective</a>
-                        </h3>
-                        <p class="blog-excerpt">
-                            Exploring the ethical implications of AI in healthcare from a young developer's 
-                            viewpoint. How can we ensure responsible AI development?
-                        </p>
-                        <div class="blog-footer">
-                            <span class="blog-reading-time">6 min read</span>
-                            <a href="#" class="blog-link">Read More →</a>
-                        </div>
-                    </article>
-
-                    <!-- Technical Article -->
-                    <article class="blog-card slide-up" data-category="technical">
-                        <div class="blog-meta">
-                            <span class="blog-category">Technical</span>
-                            <span class="blog-date">Nov 28, 2023</span>
-                        </div>
-                        <h3 class="blog-title">
-                            <a href="#">Optimizing Transformer Models for Production</a>
-                        </h3>
-                        <p class="blog-excerpt">
-                            Deep dive into optimization techniques for deploying transformer models in production. 
-                            From quantization to model distillation.
-                        </p>
-                        <div class="blog-footer">
-                            <span class="blog-reading-time">15 min read</span>
-                            <a href="#" class="blog-link">Read More →</a>
-                        </div>
-                    </article>
-
-                    <!-- Opinion Article -->
-                    <article class="blog-card slide-up" data-category="opinion">
-                        <div class="blog-meta">
-                            <span class="blog-category">Opinion</span>
-                            <span class="blog-date">Nov 20, 2023</span>
-                        </div>
-                        <h3 class="blog-title">
-                            <a href="#">Why Every Developer Should Learn About AI</a>
-                        </h3>
-                        <p class="blog-excerpt">
-                            My thoughts on why understanding AI is becoming essential for developers 
-                            across all domains, not just those working in machine learning.
-                        </p>
-                        <div class="blog-footer">
-                            <span class="blog-reading-time">5 min read</span>
-                            <a href="#" class="blog-link">Read More →</a>
-                        </div>
-                    </article>
-
-                    <!-- Tutorial Article -->
-                    <article class="blog-card slide-up" data-category="tutorial">
-                        <div class="blog-meta">
-                            <span class="blog-category">Tutorial</span>
-                            <span class="blog-date">Nov 15, 2023</span>
-                        </div>
-                        <h3 class="blog-title">
-                            <a href="#">Data Visualization with Python: Advanced Techniques</a>
-                        </h3>
-                        <p class="blog-excerpt">
-                            Learn advanced data visualization techniques using Python. From interactive 
-                            plots to custom styling, make your data tell compelling stories.
-                        </p>
-                        <div class="blog-footer">
-                            <span class="blog-reading-time">10 min read</span>
-                            <a href="#" class="blog-link">Read More →</a>
-                        </div>
-                    </article>
-
-                    <!-- Insight Article -->
-                    <article class="blog-card slide-up" data-category="insight">
-                        <div class="blog-meta">
-                            <span class="blog-category">Insight</span>
-                            <span class="blog-date">Nov 8, 2023</span>
-                        </div>
-                        <h3 class="blog-title">
-                            <a href="#">The Rise of Multimodal AI: What It Means for Developers</a>
-                        </h3>
-                        <p class="blog-excerpt">
-                            Understanding the implications of multimodal AI systems that can process 
-                            text, images, and audio simultaneously. The future is here.
-                        </p>
-                        <div class="blog-footer">
-                            <span class="blog-reading-time">7 min read</span>
-                            <a href="#" class="blog-link">Read More →</a>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- Newsletter Signup -->
-        <section class="newsletter-section">
-            <div class="container">
-                <div class="newsletter-content fade-in">
-                    <h2 class="newsletter-title">Stay Updated</h2>
-                    <p class="newsletter-description">
-                        Get the latest articles on AI, machine learning, and data science delivered 
-                        straight to your inbox. No spam, just quality content.
+                    <h2 class="article-title">Understanding Transformers: From Attention to GPT</h2>
+                    <p class="article-excerpt">
+                        A deep dive into the transformer architecture that revolutionized NLP
+                        and gave rise to modern large language models like GPT and BERT.
                     </p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Enter your email address" required>
-                        <button type="submit" class="btn btn-primary">Subscribe</button>
-                    </form>
-                    <p class="newsletter-note">
-                        Join 500+ developers already subscribed. Unsubscribe anytime.
-                    </p>
+                    <a href="blog-post.html" class="article-link">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
                 </div>
-            </div>
-        </section>
+            </article>
+
+            <article class="blog-article" data-category="cv">
+                <div class="article-image" style="background: linear-gradient(135deg, #00f5d4, #ff6b35);">
+                    <span class="icon">👁️</span>
+                    <span class="article-category">Computer Vision</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span>Coming Soon</span>
+                        <span>•</span>
+                        <span>8 min read</span>
+                    </div>
+                    <h2 class="article-title">Real-time Object Detection with YOLO v8</h2>
+                    <p class="article-excerpt">
+                        Building efficient object detection systems for real-world applications
+                        using the latest YOLO architecture and optimization techniques.
+                    </p>
+                    <a href="blog-post.html" class="article-link">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <article class="blog-article" data-category="genai">
+                <div class="article-image" style="background: linear-gradient(135deg, #ffc300, #ff2d6a);">
+                    <span class="icon">💡</span>
+                    <span class="article-category">GenAI</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span>Coming Soon</span>
+                        <span>•</span>
+                        <span>6 min read</span>
+                    </div>
+                    <h2 class="article-title">Building RAG Applications with LangChain</h2>
+                    <p class="article-excerpt">
+                        Practical guide to retrieval-augmented generation for building
+                        context-aware AI applications with better responses.
+                    </p>
+                    <a href="blog-post.html" class="article-link">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <article class="blog-article" data-category="dl">
+                <div class="article-image" style="background: linear-gradient(135deg, #ff6b35, #00f5d4);">
+                    <span class="icon">🧠</span>
+                    <span class="article-category">Deep Learning</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span>Coming Soon</span>
+                        <span>•</span>
+                        <span>10 min read</span>
+                    </div>
+                    <h2 class="article-title">CNNs from Scratch: A Visual Guide</h2>
+                    <p class="article-excerpt">
+                        Understanding convolutional neural networks by building one from
+                        scratch with intuitive visualizations and code examples.
+                    </p>
+                    <a href="blog-post.html" class="article-link">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <article class="blog-article" data-category="nlp">
+                <div class="article-image" style="background: linear-gradient(135deg, #ff2d6a, #ffc300);">
+                    <span class="icon">💬</span>
+                    <span class="article-category">NLP</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span>Coming Soon</span>
+                        <span>•</span>
+                        <span>7 min read</span>
+                    </div>
+                    <h2 class="article-title">Text Embeddings: The Foundation of Modern NLP</h2>
+                    <p class="article-excerpt">
+                        How text embeddings work and why they're the backbone of semantic
+                        search, recommendation systems, and language understanding.
+                    </p>
+                    <a href="blog-post.html" class="article-link">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+
+            <article class="blog-article" data-category="ml">
+                <div class="article-image">
+                    <span class="icon">📊</span>
+                    <span class="article-category">Machine Learning</span>
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span>Coming Soon</span>
+                        <span>•</span>
+                        <span>5 min read</span>
+                    </div>
+                    <h2 class="article-title">Feature Engineering Best Practices</h2>
+                    <p class="article-excerpt">
+                        The art of creating meaningful features that significantly improve
+                        model performance in real-world machine learning projects.
+                    </p>
+                    <a href="blog-post.html" class="article-link">
+                        Read Article
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+        </div>
+
+        <div class="coming-soon-banner">
+            <h3>✨ More Articles Coming Soon!</h3>
+            <p>I'm working on new content. Follow me on Twitter for updates!</p>
+        </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-brand">
-                    <h3 class="footer-title">Mukish</h3>
-                    <p class="footer-description">
-                        Data scientist passionate about AI research and building 
-                        intelligent systems that make a difference.
-                    </p>
-                </div>
-                
-                <div class="footer-links">
-                    <div class="footer-section">
-                        <h4 class="footer-section-title">Navigation</h4>
-                        <ul class="footer-menu">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="projects.html">Projects</a></li>
-                            <li><a href="blog.html">Blog</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-section">
-                        <h4 class="footer-section-title">Connect</h4>
-                        <ul class="footer-social">
-                            <li><a href="#" target="_blank">GitHub</a></li>
-                            <li><a href="#" target="_blank">LinkedIn</a></li>
-                            <li><a href="#" target="_blank">Twitter</a></li>
-                            <li><a href="#" target="_blank">Kaggle</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p class="footer-copyright">
-                    © 2025 Mukish. Built with ❤️ and lots of coffee.
+                <p class="footer-text">
+                    Designed & Built by <span class="highlight">Mukish S</span> © 2024
                 </p>
             </div>
         </div>
     </footer>
 
-    <!-- JavaScript Files -->
-    <script src="scripts/main.js"></script>
-    <script src="scripts/animations.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Blog filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                const articles = document.querySelectorAll('.blog-article');
+
+                articles.forEach(article => {
+                    if (filter === 'all' || article.dataset.category === filter) {
+                        article.style.display = 'block';
+                        article.style.animation = 'fadeInUp 0.5s ease forwards';
+                    } else {
+                        article.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
-</html> 
+
+</html>
