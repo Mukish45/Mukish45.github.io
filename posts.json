@@ -1,5 +1,15 @@
 [
   {
+    "slug": "azure-claude-OpenAI-Agent-SDK-Compatibility",
+    "title": "Azure Claude 4.5 + OpenAI Agents SDK Compatibility Patch",
+    "description": "A monkey-patch solution to run the OpenAI Agents SDK with Azure AI Foundry's Claude Sonnet 4.5 endpoint.",
+    "category": "GenAI & AI Agents",
+    "date": "2025-12-07T00:00:00.000Z",
+    "readTime": "10 min read",
+    "icon": "📝",
+    "url": "/blog/azure-claude-OpenAI-Agent-SDK-Compatibility/"
+  },
+  {
     "slug": "docker-best-practices",
     "title": "Docker Best Practices",
     "description": "A production-ready guide to building efficient, secure, and maintainable Docker containers.",
