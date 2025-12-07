@@ -362,7 +362,9 @@ function generatePostHTML(frontmatter, content, slug) {
             </div>
 
             <div class="author-card">
-                <div class="author-avatar">👨‍💻</div>
+                <div class="author-avatar">
+                    <img src="https://avatars.githubusercontent.com/u/73186875?s=400&u=081c28d78a55b5c18cc1fa2f584e6e3886bd1785&v=4" alt="Author Avatar">
+                </div>
                 <div class="author-info">
                     <h4>Mukish S</h4>
                     <p>Data Scientist at MangoBytes. Passionate about Machine Learning and Generative AI.</p>
