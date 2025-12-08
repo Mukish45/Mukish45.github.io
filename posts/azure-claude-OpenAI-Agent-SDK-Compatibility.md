@@ -147,19 +147,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
-
-## 🐛 Known Issues: "Event loop is closed"
-
-If you see `RuntimeError: Event loop is closed` or `Fatal error on SSL transport` at the end of your script execution, this is due to `aiohttp` (used by LiteLLM) not closing its SSL connections gracefully before the script exits.
-
-**Fix:**
-Add a small sleep delay at the end of your `main()` function:
-
-```python
-async def main():
-    # ... run your agent ...
-    await Runner.run(agent, "...")
-    
-    # Give SSL transports time to close
-    await asyncio.sleep(0.25) 
-```
