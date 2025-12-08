@@ -46,7 +46,7 @@ export AZURE_API_BASE="https://your-resource-name.openai.azure.com/"
 export AZURE_API_VERSION="2024-10-01-preview" # or your specific version
 
 # LiteLLM Model Identity
-# Format: azure/<deployment-name>
+# Format: azure_ai/<deployment-name>
 export LITELLM_MODEL="azure_ai/claude-sonnet-4-5"
 ```
 
