@@ -1,5 +1,15 @@
 [
   {
+    "slug": "please-donot-429-me",
+    "title": "Please Don't 429 Me",
+    "description": "A deep dive into building a resilient, cost-aware, and self-healing LLM request router that intelligently manages multiple API subscriptions across Azure, Anthropic, Google, and xAI to avoid rate limits.",
+    "category": "GenAI & AI Agents",
+    "date": "2025-12-13T00:00:00.000Z",
+    "readTime": "15 min read",
+    "icon": "📝",
+    "url": "/blog/please-donot-429-me/"
+  },
+  {
     "slug": "azure-claude-OpenAI-Agent-SDK-Compatibility",
     "title": "Azure Claude 4.5 + OpenAI Agents SDK Compatibility Patch",
     "description": "A monkey-patch solution to run the OpenAI Agents SDK with Azure AI Foundry's Claude Sonnet 4.5 endpoint.",

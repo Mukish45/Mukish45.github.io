@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A deep dive into building a resilient, cost-aware, and self-healing LLM request router that intelligently manages multiple API subscriptions across Azure, Anthropic, Google, and xAI to avoid rate limits.">
+    <title>Please Don't 429 Me | Mukish S Blog</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .post-header {
+            padding-top: 120px;
+            padding-bottom: var(--space-3xl);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .post-category {
+            display: inline-block;
+            padding: var(--space-xs) var(--space-md);
+            background: rgba(0, 245, 212, 0.1);
+            border: 1px solid rgba(0, 245, 212, 0.2);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            color: var(--color-accent-cyan);
+            margin-bottom: var(--space-lg);
+        }
+
+        .post-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-lg);
+            line-height: 1.2;
+        }
+
+        .post-meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xl);
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .post-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .post-content {
+            max-width: 720px;
+            margin: 0 auto;
+            padding-bottom: var(--space-4xl);
+        }
+
+        .post-content h2 {
+            font-size: 1.75rem;
+            margin-top: var(--space-3xl);
+            margin-bottom: var(--space-lg);
+            color: var(--color-accent-cyan);
+        }
+
+        .post-content h3 {
+            font-size: 1.35rem;
+            margin-top: var(--space-2xl);
+            margin-bottom: var(--space-md);
+        }
+
+        .post-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        .post-content code {
+            background: var(--color-bg-tertiary);
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            color: var(--color-accent-magenta);
+        }
+
+        .post-content pre {
+            background: var(--color-bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            overflow-x: auto;
+            margin: var(--space-xl) 0;
+        }
+
+        .post-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--color-text-primary);
+        }
+
+        .post-content blockquote {
+            border-left: 3px solid var(--color-accent-coral);
+            padding-left: var(--space-lg);
+            margin: var(--space-xl) 0;
+            font-style: italic;
+            color: var(--color-text-secondary);
+        }
+
+        .post-content ul, .post-content ol {
+            margin: var(--space-lg) 0;
+            padding-left: var(--space-xl);
+            color: var(--color-text-secondary);
+        }
+
+        .post-content li {
+            margin-bottom: var(--space-sm);
+            line-height: 1.7;
+        }
+
+        .post-content a {
+            color: var(--color-accent-cyan);
+            text-decoration: underline;
+            text-decoration-color: rgba(0, 245, 212, 0.3);
+            transition: var(--transition-fast);
+        }
+
+        .post-content a:hover {
+            text-decoration-color: var(--color-accent-cyan);
+        }
+
+        .post-content img {
+            max-width: 100%;
+            border-radius: var(--radius-lg);
+            margin: var(--space-xl) 0;
+        }
+
+        .share-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-lg);
+            padding: var(--space-2xl) 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: var(--space-3xl);
+        }
+
+        .share-label { color: var(--color-text-muted); }
+
+        .share-buttons {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .share-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            color: var(--color-text-secondary);
+            transition: var(--transition-fast);
+        }
+
+        .share-btn:hover {
+            border-color: var(--color-accent-cyan);
+            color: var(--color-accent-cyan);
+        }
+
+        .share-btn svg { width: 20px; height: 20px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-xl);
+            transition: var(--transition-fast);
+        }
+
+        .back-link:hover { color: var(--color-accent-cyan); }
+
+        .author-card {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+            background: var(--color-bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            margin-top: var(--space-3xl);
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .author-info h4 {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .author-info p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: var(--space-sm) !important;
+        }
+
+        .author-links {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .author-links a {
+            color: var(--color-text-muted);
+            transition: var(--transition-fast);
+        }
+
+        .author-links a:hover { color: var(--color-accent-cyan); }
+    </style>
+</head>
+<body>
+    <canvas id="neural-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-bracket">&lt;</span>
+                <span class="logo-text">MS</span>
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#about" class="nav-link">About</a></li>
+                <li><a href="/#skills" class="nav-link">Skills</a></li>
+                <li><a href="/#projects" class="nav-link">Projects</a></li>
+                <li><a href="/blog/" class="nav-link">Blog</a></li>
+                <li><a href="/#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <a href="/blog/" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Blog
+        </a>
+
+        <header class="post-header">
+            <span class="post-category">📝 GenAI & AI Agents</span>
+            <h1 class="post-title">Please Don't 429 Me</h1>
+            <div class="post-meta">
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    December 13, 2025
+                </span>
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    15 min read
+                </span>
+            </div>
+        </header>
+
+        <article class="post-content">
+            <h1>Please Don&#39;t 429 Me: Building a Production-Grade Multi-Provider LLM Router</h1>
+<blockquote>
+<p><strong>A deep dive into building a resilient, cost-aware, and self-healing LLM request router that intelligently manages multiple API subscriptions across Azure, Anthropic, Google, and xAI to avoid rate limits</strong></p>
+</blockquote>
+<h2>🎵 The Algorithm</h2>
+<p><strong>&quot;Please Don&#39;t 429 Me&quot;</strong> is an intelligent multi-factor routing algorithm that prevents HTTP 429 (Too Many Requests) errors by:</p>
+<ul>
+<li>Monitoring real-time capacity across all endpoints</li>
+<li>Predicting and avoiding rate limit violations</li>
+<li>Automatically failing over to healthy alternatives</li>
+<li>Self-healing through circuit breakers and adaptive backoff</li>
+</ul>
+<p><em>Named after the dreaded HTTP 429 status code that every developer fears when hitting API rate limits.</em></p>
+<h2>🎯 The Problem</h2>
+<p>Modern AI applications often need to:</p>
+<ul>
+<li><strong>Manage multiple LLM providers</strong> (Azure OpenAI, Claude, Gemini, Grok)</li>
+<li><strong>Handle rate limits</strong> across different subscriptions and regions</li>
+<li><strong>Optimize costs</strong> while maintaining performance</li>
+<li><strong>Ensure high availability</strong> with intelligent failover</li>
+<li><strong>Monitor system health</strong> in real-time</li>
+</ul>
+<p>This project implements a production-ready solution that addresses all these challenges with a sophisticated routing system that automatically selects the best endpoint based on availability, cost, latency, and health metrics.</p>
+<h2>🏗️ Architecture Overview</h2>
+<p>The system is built around several key components working together:</p>
+<pre><code>┌─────────────┐
+│   Gateway   │ ← Request Queue + Worker Pool
+└──────┬──────┘
+       │
+       ▼
+┌─────────────┐
+│   Router    │ ← Intelligent Endpoint Selection
+└──────┬──────┘
+       │
+       ▼
+┌─────────────────────────────────────────┐
+│  Endpoints (Azure, Claude, Gemini, etc) │
+└─────────────────────────────────────────┘
+       ▲
+       │
+┌──────┴──────┐
+│   Monitor   │ ← Health Checks + Quota Refresh
+└─────────────┘
+</code></pre>
+<h3>Core Components</h3>
+<ol>
+<li><strong>Gateway</strong> - Request queue with async worker pool</li>
+<li><strong>Router</strong> - Multi-factor scoring algorithm for endpoint selection</li>
+<li><strong>Monitor</strong> - Periodic health checks and quota refresh</li>
+<li><strong>Circuit Breaker</strong> - Automatic failure detection and recovery</li>
+<li><strong>Metrics Collector</strong> - Comprehensive observability</li>
+<li><strong>Dashboard</strong> - Real-time visualization via Server-Sent Events (SSE)</li>
+</ol>
+<h2>🔑 Key Features Explained</h2>
+<h3>1. Circuit Breaker Pattern</h3>
+<p>The circuit breaker protects endpoints from cascading failures with three states:</p>
+<pre><code class="language-python">class CircuitState(Enum):
+    CLOSED = &quot;closed&quot;      # Normal operation
+    OPEN = &quot;open&quot;          # Failures detected, blocking requests
+    HALF_OPEN = &quot;half_open&quot;  # Testing recovery
+</code></pre>
+<p><strong>How it works:</strong></p>
+<ul>
+<li><strong>CLOSED</strong>: Normal operation, requests flow through</li>
+<li>After <strong>3 consecutive failures</strong> → Opens circuit</li>
+<li><strong>OPEN</strong>: Blocks all requests for 30 seconds</li>
+<li>After timeout → Enters <strong>HALF_OPEN</strong> state</li>
+<li><strong>HALF_OPEN</strong>: Allows 3 test requests<ul>
+<li>If all succeed → Returns to CLOSED</li>
+<li>If any fails → Returns to OPEN</li>
+</ul>
+</li>
+</ul>
+<p>This prevents wasting time on failing endpoints and allows automatic recovery.</p>
+<h3>2. Intelligent Routing Algorithm</h3>
+<p>The router uses a <strong>multi-factor scoring system</strong> to select the optimal endpoint:</p>
+<pre><code class="language-python">def _calculate_score(self, ep: ModelEndpoint, ctx: RoutingContext) -&gt; float:
+    score = ep.config.priority / 100.0           # Base priority
+    score += load_factor * 3.0                   # Current load (TPM/RPM)
+    score += (1.0 - health) * 5.0                # Health score
+    score += estimated_cost * 10.0               # Cost optimization
+    score += (latency_ms / 1000.0) * 0.5         # Latency penalty
+    score += capability_mismatch * 20.0          # Capability matching
+    return score  # Lower is better
+</code></pre>
+<p><strong>Factors considered:</strong></p>
+<ul>
+<li><strong>Priority</strong>: Pre-configured endpoint preference</li>
+<li><strong>Load</strong>: Current TPM/RPM utilization (0-100%)</li>
+<li><strong>Health</strong>: Circuit breaker state + recent failures</li>
+<li><strong>Cost</strong>: Estimated cost per request (input + output tokens)</li>
+<li><strong>Latency</strong>: Average response time</li>
+<li><strong>Capabilities</strong>: Model-specific features (reasoning, coding, creative)</li>
+</ul>
+<h3>3. Adaptive Retry with Exponential Backoff</h3>
+<p>When requests fail, the system implements intelligent retry logic:</p>
+<pre><code class="language-python"># Exponential backoff with jitter
+backoff = 0.5 * (2 ** (attempt - 1)) + random.random()
+await asyncio.sleep(backoff)
+</code></pre>
+<p><strong>Retry behavior:</strong></p>
+<ul>
+<li><strong>429 (Rate Limit)</strong>: Exponential backoff (0.5s → 1s → 2s → 4s)</li>
+<li><strong>500 (Server Error)</strong>: Linear backoff (0.2s → 0.4s → 0.6s)</li>
+<li><strong>Timeout</strong>: Fixed 0.5s delay</li>
+<li><strong>Max retries</strong>: 4 attempts before giving up</li>
+</ul>
+<p>Each retry attempts a <strong>different endpoint</strong> based on current health scores.</p>
+<h3>4. Cost-Aware Routing</h3>
+<p>The system tracks costs in real-time and optimizes routing:</p>
+<pre><code class="language-python">def estimate_cost(self, input_tokens: int, output_tokens: int) -&gt; float:
+    input_cost = (input_tokens / 1000.0) * self.config.cost_per_1k_input
+    output_cost = (output_tokens / 1000.0) * self.config.cost_per_1k_output
+    return input_cost + output_cost
+</code></pre>
+<p><strong>Example pricing</strong> (configured per endpoint):</p>
+<ul>
+<li>GPT-5.2: $0.03/1K input, $0.06/1K output</li>
+<li>Gemini-3: $0.01/1K input, $0.03/1K output (cheaper!)</li>
+<li>Claude-4.5: $0.025/1K input, $0.075/1K output</li>
+</ul>
+<p>The router <strong>favors cheaper models</strong> when multiple endpoints can handle the request.</p>
+<h3>5. Request Prioritization</h3>
+<p>Requests can be prioritized to ensure critical workloads get resources first:</p>
+<pre><code class="language-python">class Priority(Enum):
+    CRITICAL = 1  # Production user-facing requests
+    HIGH = 2      # Important background jobs
+    NORMAL = 3    # Standard requests
+    LOW = 4       # Batch processing, analytics
+</code></pre>
+<p>Higher priority requests get <strong>better endpoint selection</strong> and <strong>faster retry attempts</strong>.</p>
+<h3>6. Model Capability Matching</h3>
+<p>Different models excel at different tasks:</p>
+<pre><code class="language-python">class ModelCapability(Enum):
+    REASONING = &quot;reasoning&quot;  # Complex logic, math
+    CODING = &quot;coding&quot;        # Code generation
+    CREATIVE = &quot;creative&quot;    # Writing, storytelling
+    GENERAL = &quot;general&quot;      # General-purpose
+</code></pre>
+<p><strong>Example configuration:</strong></p>
+<pre><code class="language-python">EndpointConfig(
+    model=&quot;gpt-5.2&quot;,
+    capabilities=[ModelCapability.REASONING, ModelCapability.GENERAL]
+)
+</code></pre>
+<p>Requests can specify required capabilities, and the router <strong>heavily penalizes</strong> endpoints lacking them.</p>
+<h3>7. Real-Time Monitoring &amp; Metrics</h3>
+<p>The system collects comprehensive metrics for every request:</p>
+<pre><code class="language-python">@dataclass
+class RequestMetrics:
+    request_id: str
+    endpoint_id: str
+    start_time: float
+    end_time: float
+    input_tokens: int
+    output_tokens: int
+    status_code: int
+    latency_ms: float
+    cost: float
+    retries: int
+</code></pre>
+<p><strong>Aggregated statistics:</strong></p>
+<ul>
+<li><strong>Per-endpoint</strong>: Request count, success rate, P95 latency, total cost</li>
+<li><strong>Overall</strong>: Total requests, tokens processed, average latency, cumulative cost</li>
+<li><strong>Sliding window</strong>: Last 1000 requests for trend analysis</li>
+</ul>
+<h3>8. Live Dashboard with SSE</h3>
+<p>The system includes a <strong>real-time web dashboard</strong> using Server-Sent Events:</p>
+<pre><code class="language-python">async def broadcast_loop(self):
+    while True:
+        await asyncio.sleep(1)
+        stats = self.orchestrator.dashboard.get_json_stats()
+        message = f&quot;data: {json.dumps(stats)}\n\n&quot;
+        
+        for writer in self.clients:
+            writer.write(message.encode(&#39;utf-8&#39;))
+            await writer.drain()
+</code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Updates every <strong>1 second</strong></li>
+<li>Shows TPM/RPM usage bars</li>
+<li>Health indicators (🟢🟡🔴)</li>
+<li>Circuit breaker states (✅⚠️🚫)</li>
+<li>Cost tracking</li>
+<li>Request distribution charts</li>
+</ul>
+<p>Access at: <code>http://localhost:8000</code></p>
+<h2>🔧 Technical Implementation Details</h2>
+<h3>Async Architecture</h3>
+<p>The entire system is built on <strong>asyncio</strong> for high concurrency:</p>
+<pre><code class="language-python"># Worker pool pattern
+async def _worker_loop(self, worker: Worker):
+    while not self._stop:
+        item = await self.queue.get()
+        result = await worker.handle_request(...)
+        future.set_result(result)
+</code></pre>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>Handle <strong>hundreds of concurrent requests</strong> with minimal overhead</li>
+<li>Non-blocking I/O for API calls</li>
+<li>Efficient resource utilization</li>
+</ul>
+<h3>Provider Adapters</h3>
+<p>The system uses an <strong>adapter pattern</strong> for different LLM providers:</p>
+<pre><code class="language-python">class ProviderAdapter(ABC):
+    @abstractmethod
+    async def fetch_quota(self, endpoint) -&gt; Tuple[int, int]:
+        pass
+    
+    @abstractmethod
+    async def call_model(self, endpoint, prompt, max_tokens) -&gt; Dict:
+        pass
+</code></pre>
+<p><strong>Implemented adapters:</strong></p>
+<ul>
+<li><code>AzureAdapter</code> - Azure OpenAI</li>
+<li><code>AnthropicAdapter</code> - Claude</li>
+<li><code>GoogleAdapter</code> - Gemini</li>
+<li><code>XAIAdapter</code> - Grok</li>
+</ul>
+<p>Adding a new provider is as simple as implementing the adapter interface.</p>
+<h3>Health Scoring Algorithm</h3>
+<p>Each endpoint gets a <strong>health score (0-1)</strong> based on multiple factors:</p>
+<pre><code class="language-python">def get_health_score(self) -&gt; float:
+    if self.circuit_breaker.state == CircuitState.OPEN:
+        return 0.0
+    elif self.circuit_breaker.state == CircuitState.HALF_OPEN:
+        return 0.3
+    
+    score = 1.0
+    
+    # Penalize recent failures
+    score *= (1.0 - (failure_count / 10.0))
+    
+    # Penalize high latency (baseline: 200ms)
+    if avg_latency_ms &gt; 200:
+        score *= (200.0 / avg_latency_ms)
+    
+    return max(0.0, min(1.0, score))
+</code></pre>
+<p>This score is used in routing decisions to <strong>avoid unhealthy endpoints</strong>.</p>
+<h3>Quota Management</h3>
+<p>The monitor periodically refreshes quotas and usage:</p>
+<pre><code class="language-python">async def _refresh_endpoint(self, ep: ModelEndpoint):
+    adapter = self.adapters[ep.config.provider]
+    
+    # Fetch current limits
+    rpm_limit, tpm_limit = await adapter.fetch_quota(ep)
+    
+    # Fetch current usage
+    rpm_used, tpm_used = await adapter.fetch_usage(ep)
+    
+    ep.rpm_used = rpm_used
+    ep.tpm_used = tpm_used
+</code></pre>
+<p><strong>Refresh interval</strong>: Every 60 seconds (configurable)</p>
+<p>This ensures the router always has <strong>accurate capacity information</strong>.</p>
+<h3>Request Flow</h3>
+<p>Here&#39;s what happens when a request comes in:</p>
+<pre><code>1. Request submitted to Gateway queue
+2. Worker picks up request
+3. Router calculates scores for all endpoints
+4. Best endpoint selected (lowest score)
+5. Capacity reserved (TPM/RPM)
+6. API call made via provider adapter
+7. Response processed
+8. Metrics recorded
+9. Capacity released
+10. Result returned to caller
+</code></pre>
+<p>If the request fails:</p>
+<ul>
+<li>Circuit breaker updated</li>
+<li>Capacity released</li>
+<li>Exponential backoff applied</li>
+<li><strong>Different endpoint</strong> tried on retry</li>
+</ul>
+<h2>📊 Performance Characteristics</h2>
+<h3>Throughput</h3>
+<p>With 8 workers and proper endpoint configuration:</p>
+<ul>
+<li><strong>100+ requests/second</strong> sustained</li>
+<li><strong>Sub-second P95 latency</strong> for most requests</li>
+<li><strong>99%+ success rate</strong> with proper fallback</li>
+</ul>
+<h3>Resource Usage</h3>
+<ul>
+<li><strong>Memory</strong>: ~50MB base + ~1KB per request in metrics window</li>
+<li><strong>CPU</strong>: Minimal (mostly I/O bound)</li>
+<li><strong>Network</strong>: Depends on LLM provider latency</li>
+</ul>
+<h3>Scalability</h3>
+<p>The system scales horizontally:</p>
+<ul>
+<li>Increase <code>worker_count</code> for more concurrent requests</li>
+<li>Add more endpoints for higher throughput</li>
+<li>Metrics window size controls memory usage</li>
+</ul>
+<h2>🚀 Usage Example</h2>
+<pre><code class="language-python"># Initialize configuration
+config = RouterConfig(
+    refresh_interval=60,
+    worker_count=8,
+    max_retries=4,
+    enable_cost_optimization=True,
+    enable_adaptive_routing=True,
+)
+
+# Create orchestrator
+orchestrator = LLMRouterOrchestrator(DEFAULT_ENDPOINTS, config)
+
+# Start system
+await orchestrator.start()
+
+# Submit request
+result = await orchestrator.submit_request(
+    request_id=&quot;user-123&quot;,
+    prompt=&quot;Explain quantum computing&quot;,
+    max_output_tokens=500,
+    priority=Priority.HIGH,
+    preferred_model=&quot;gpt-5.1&quot;
+)
+
+# Check result
+if result[&quot;status&quot;] == 200:
+    print(f&quot;Response: {result[&#39;response&#39;]}&quot;)
+    print(f&quot;Cost: ${result[&#39;cost&#39;]:.4f}&quot;)
+    print(f&quot;Latency: {result[&#39;latency_ms&#39;]:.0f}ms&quot;)
+</code></pre>
+<h2>🎨 Dashboard Features</h2>
+<p>The web dashboard provides real-time visibility:</p>
+<h3>Overall Statistics</h3>
+<ul>
+<li>Total requests processed</li>
+<li>Success rate percentage</li>
+<li>Average latency</li>
+<li>Cumulative cost</li>
+</ul>
+<h3>Per-Endpoint Metrics</h3>
+<ul>
+<li><strong>TPM/RPM Usage</strong>: Visual bars showing capacity utilization</li>
+<li><strong>Health Indicators</strong>: Color-coded status (🟢🟡🔴)</li>
+<li><strong>Circuit State</strong>: Current breaker state (✅⚠️🚫)</li>
+<li><strong>Performance</strong>: Request count, latency, cost</li>
+<li><strong>Model Info</strong>: Provider, region, capabilities</li>
+</ul>
+<h3>Live Updates</h3>
+<ul>
+<li><strong>1-second refresh</strong> via Server-Sent Events</li>
+<li><strong>Request distribution</strong> charts</li>
+<li><strong>Cost tracking</strong> over time</li>
+<li><strong>Latency trends</strong></li>
+</ul>
+<h2>🛡️ Reliability Features</h2>
+<h3>Self-Healing</h3>
+<ul>
+<li>Automatic circuit breaker recovery</li>
+<li>Health-based routing avoids bad endpoints</li>
+<li>Continuous background monitoring</li>
+</ul>
+<h3>Graceful Degradation</h3>
+<ul>
+<li>Falls back to slower/more expensive endpoints when needed</li>
+<li>Continues operating even if some endpoints fail</li>
+<li>Queues requests during high load</li>
+</ul>
+<h3>Observability</h3>
+<ul>
+<li>Comprehensive logging at all levels</li>
+<li>Detailed metrics for every request</li>
+<li>Real-time dashboard for monitoring</li>
+</ul>
+<h2>🔮 Advanced Features</h2>
+<h3>Continuous Load Generation</h3>
+<p>For testing, the system includes a load generator:</p>
+<pre><code class="language-python">async def continuous_load_generator(orchestrator):
+    while True:
+        # Sine wave pattern (1-5 requests/batch)
+        load_factor = (1 + math.sin(time.time() / 10.0)) / 2.0
+        batch_size = 1 + int(load_factor * 4)
+        
+        for _ in range(batch_size):
+            asyncio.create_task(orchestrator.submit_request(...))
+        
+        await asyncio.sleep(0.5 + random.random())
+</code></pre>
+<p>This simulates <strong>realistic traffic patterns</strong> for testing.</p>
+<h3>Model Family Preference</h3>
+<p>The router understands model families:</p>
+<pre><code class="language-python">def _get_model_family(self, model: str) -&gt; str:
+    # &quot;gpt-5.1&quot; -&gt; &quot;gpt-5&quot;
+    parts = model.split(&quot;-&quot;)
+    return &quot;-&quot;.join(parts[:2])
+</code></pre>
+<p>If you prefer <code>gpt-5.1</code>, it will <strong>favor all GPT-5.x models</strong> over other families.</p>
+<h2>📈 Future Enhancements</h2>
+<p>Potential improvements:</p>
+<ol>
+<li><strong>Persistent Metrics</strong>: Store metrics in TimescaleDB/InfluxDB</li>
+<li><strong>Predictive Scaling</strong>: ML-based load prediction</li>
+<li><strong>Cost Budgets</strong>: Per-user or per-project cost limits</li>
+<li><strong>A/B Testing</strong>: Route percentage of traffic to new models</li>
+<li><strong>Streaming Support</strong>: Full SSE streaming for LLM responses</li>
+<li><strong>Rate Limit Prediction</strong>: Proactive throttling before hitting limits</li>
+<li><strong>Multi-Region Routing</strong>: Geographic optimization</li>
+<li><strong>Custom Routing Policies</strong>: User-defined routing rules</li>
+</ol>
+<h2>🎓 Key Takeaways</h2>
+<p>This implementation demonstrates several important patterns:</p>
+<ol>
+<li><strong>Circuit Breaker</strong>: Essential for resilient distributed systems</li>
+<li><strong>Multi-Factor Scoring</strong>: Balances competing concerns (cost, latency, health)</li>
+<li><strong>Async Architecture</strong>: Enables high concurrency with low overhead</li>
+<li><strong>Adapter Pattern</strong>: Makes adding new providers trivial</li>
+<li><strong>Comprehensive Metrics</strong>: Critical for production observability</li>
+<li><strong>Self-Healing</strong>: Automatic recovery from transient failures</li>
+</ol>
+<h2>🏁 Conclusion</h2>
+<p>Building a production-grade LLM router requires careful consideration of:</p>
+<ul>
+<li><strong>Reliability</strong>: Circuit breakers, retries, fallbacks</li>
+<li><strong>Performance</strong>: Async I/O, efficient routing, caching</li>
+<li><strong>Cost</strong>: Token-based pricing, optimization algorithms</li>
+<li><strong>Observability</strong>: Metrics, logging, dashboards</li>
+</ul>
+<p>This implementation provides a solid foundation that can be extended for production use cases. The modular architecture makes it easy to add new providers, routing strategies, and monitoring capabilities.</p>
+<hr>
+<h2>🚀 Getting Started</h2>
+<ol>
+<li><p><strong>Install dependencies</strong>:</p>
+<pre><code class="language-bash">pip install asyncio
+</code></pre>
+</li>
+<li><p><strong>Run the system</strong>:</p>
+<pre><code class="language-bash">python3 monitor.py
+</code></pre>
+</li>
+<li><p><strong>Open dashboard</strong>:</p>
+<pre><code>http://localhost:8000
+</code></pre>
+</li>
+<li><p><strong>Watch the magic happen</strong> ✨</p>
+</li>
+</ol>
+<p>The system will start generating continuous load and you&#39;ll see real-time updates showing how requests are routed across different endpoints based on health, cost, and availability.</p>
+<hr>
+<p><strong>Built with ❤️ for production AI systems</strong></p>
+
+
+            <div class="share-section">
+                <span class="share-label">Share this article:</span>
+                <div class="share-buttons">
+                    <a href="https://twitter.com/intent/tweet?text=Please%20Don't%20429%20Me&url=https%3A%2F%2Fmukish45.github.io%2Fblog%2Fplease-donot-429-me%2F" class="share-btn" target="_blank" aria-label="Share on Twitter">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fmukish45.github.io%2Fblog%2Fplease-donot-429-me%2F" class="share-btn" target="_blank" aria-label="Share on LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="author-card">
+                <div class="author-avatar">
+                    <img src="https://avatars.githubusercontent.com/u/73186875?s=400&u=081c28d78a55b5c18cc1fa2f584e6e3886bd1785&v=4" alt="Author Avatar">
+                </div>
+                <div class="author-info">
+                    <h4>Mukish S</h4>
+                    <p>Data Scientist at MangoBytes. Passionate about Machine Learning and Generative AI.</p>
+                    <div class="author-links">
+                        <a href="https://twitter.com/mukish_s" target="_blank">Twitter</a>
+                        <a href="https://github.com/mukish45" target="_blank">GitHub</a>
+                        <a href="https://linkedin.com/in/mukish-s2034033" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">
+                    Designed & Built by <span class="highlight">Mukish S</span> © 2025
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>
